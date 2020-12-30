@@ -11,7 +11,10 @@ from selenium.common.exceptions import NoSuchElementException,InvalidArgumentExc
 from time import sleep
 
 def scrape_domains(domain_file_path):
-	os.mkdir("./Targets")
+	try:
+		os.mkdir("./Targets")
+	except FileExistsError:
+		print("[*] Folder Targets already exists for this Bounty ... continuing on")
 	domain_file = open(domain_file_path, "r")
 	domains =  domain_file.read()
 	domains = domains.split("\n")
@@ -21,9 +24,12 @@ def scrape_domains(domain_file_path):
 	#scrape list of domains for subdomains and save them to file
 	for domain in domains:
 		if domain != "":
+			try:
+				os.mkdir("./Targets/"+domain)
+				os.mkdir("./Targets/"+domain+"/Screenshots")
+			except FileExistsError:
+				print("[*] Folder Targets or Targets/"+domain+" already exists for this Bounty ... continuing on")
 			print("[*] Scraping " + domain)
-			os.mkdir("./Targets/"+domain)
-			os.mkdir("./Targets/"+domain+"/Screenshots")
 			process = subprocess.call("/usr/share/Sublist3r/sublist3r.py -d " + domain + " -o " + "./Targets/"+domain+"/"+"subdomains.txt " + "> /dev/null 2>&1", shell = True)
 			
 			#use httprobe to check which sites are allive
@@ -60,6 +66,10 @@ def scrape_domains(domain_file_path):
 
 				except WebDriverException:
 					print("[x] " + subdomain + " errored out... moving on")
+
+				except Exception as e:
+					print("[x] " + subdomain + " errored out ... no idea why .. moving on")
+					print(e)
 			driver.close()
 			
 		
