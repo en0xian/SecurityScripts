@@ -1,7 +1,5 @@
 #!/usr/bin/python
-#This script attempts to tamper with the username portion of a SAML response 
-#to verify that the service provider is verifying the signature provided by the Identity provider
-#replace the SAML response in your proxy with the result of this script
+#This script attempts to tamper with SAML responses: Signature Verification, Comment Injection, Signature Stripping
 
 import sys, getopt
 import urllib.parse
@@ -45,7 +43,7 @@ def main(argv):
 				f = open("temp.xml","w")
 				f.write(swapped)
 				f.close()
-				input("[-] Remove the content of the <ds:SignatureValue> tag (only the content) from temp.xml, then paste here and press ENTER\n")
+				input("[-] Remove the content of the <ds:SignatureValue> tag (only the content) from temp.xml, then press ENTER\n")
 				f = open("temp.xml","r")
 				swapped =  f.read()
 				print("[*] temp.xml has been parsed deleting file")
