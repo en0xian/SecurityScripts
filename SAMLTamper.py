@@ -1,6 +1,7 @@
 #!/usr/bin/python
-#This script takes a base64 encoded SAML response, replaces the user parameter, and then re encodes the response
-#take input from the user
+#This script attempts to tamper with the username portion of a SAML response 
+#to verify that the service provider is verifying the signature provided by the Identity provider
+#replace the SAML response in your proxy with the result of this script
 
 import sys, getopt
 import urllib.parse
@@ -16,11 +17,11 @@ def main(argv):
 	try: 
 		opts, args = getopt.getopt(argv, "hs:u:t:",["SAMLresponse=","username=","tamperusername="])
 	except getopt.GetoptError:
-		print("SAMLTamper.py -s <SAMLResponse> -u <original username> -t <tamper username>")
+		print("SAMLTamper.py  -u <original username> -t <tamper username> -s <SAMLResponse>")
 		sys.exit(2)
 	for opt, arg in opts:
 		if opt =="-h":
-			print("SAMLTamper.py -s <SAMLResponse> -u <Tamper Username>")
+			print("SAMLTamper.py -u <original username> -t <tamper username> -s <SAMLResponse>")
 		elif opt in ("-u","--username"):
 			original_username  = arg
 		elif opt in ("-t","--tamperusername"):
@@ -41,5 +42,4 @@ def main(argv):
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
-
 
