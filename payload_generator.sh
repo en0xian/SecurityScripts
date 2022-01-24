@@ -27,6 +27,9 @@ payload64sharp=payload64.cs
 #32 bit C sharp payload called payload32.cs
 #64 bit C sharp payload called payload64.cs
 
+#TODO:
+# add install for OSSLSIGNCODE sudo apt-get install osslsigncode
+
 
 echo "[+] Creating Payload Directory @ $payload_dir"
 mkdir $payload_dir
